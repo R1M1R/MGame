@@ -19,27 +19,27 @@
         .ambient-light { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: radial-gradient(circle at 50% 50%, rgba(255, 0, 127, 0.05), transparent 60%); pointer-events: none; z-index: 0; transition: background 2s ease; }
         #screen-flash { position: absolute; inset: 0; background: white; opacity: 0; pointer-events: none; z-index: 15; transition: opacity 0.1s; }
 
-        #canvas-wrapper { flex: 1; position: relative; width: 100%; z-index: 2; margin-bottom: 20px; }
+        #canvas-wrapper { flex: 1; position: relative; width: 100%; z-index: 2; }
         canvas { display: block; width: 100%; height: 100%; }
 
         /* UI */
-        #hud { position: absolute; top: env(safe-area-inset-top, 10px); left: 0; width: 100%; padding: 15px; pointer-events: none; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; }
-        .glass-panel { background: rgba(10, 10, 15, 0.6); padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); text-align: center; pointer-events: auto;}
+        #hud { position: absolute; top: env(safe-area-inset-top, 15px); left: 0; width: 100%; padding: 0 15px; pointer-events: none; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; }
+        .glass-panel { background: rgba(10, 10, 15, 0.7); padding: 12px 15px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); text-align: center; pointer-events: auto;}
         
-        .stat-row { display: flex; justify-content: space-between; width: 100%; align-items: center; gap: 15px; margin-bottom: 5px;}
-        .score-val { font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent); font-variant-numeric: tabular-nums; line-height: 1; }
-        .best-score { font-size: 11px; color: #ff0055; font-weight: bold; text-shadow: 0 0 5px rgba(255,0,85,0.5); text-align: left; }
-        .coins-val { font-size: 18px; font-weight: 900; color: var(--coin); text-shadow: 0 0 10px rgba(255, 204, 0, 0.5); display: flex; align-items: center; gap: 5px; }
+        .stat-row { display: flex; justify-content: space-between; width: 100%; align-items: flex-start; gap: 15px;}
+        .score-val { font-size: 28px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent); font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 5px; text-align: left;}
+        .best-score { font-size: 11px; color: #ff0055; font-weight: bold; text-shadow: 0 0 5px rgba(255,0,85,0.5); text-align: left; opacity: 0.9;}
+        .coins-val { font-size: 16px; font-weight: 900; color: var(--coin); text-shadow: 0 0 10px rgba(255, 204, 0, 0.5); display: flex; align-items: center; gap: 5px; }
         
-        #next-box { width: 45px; height: 45px; position: relative; display: flex; justify-content: center; align-items: center; margin: 0 auto; }
-        .icon-btn { background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); width: 40px; height: 40px; border-radius: 50%; color: white; font-size: 18px; display: flex; justify-content: center; align-items: center; cursor: pointer; pointer-events: auto; backdrop-filter: blur(5px); transition: 0.2s;}
+        #next-box { width: 50px; height: 50px; position: relative; display: flex; justify-content: center; align-items: center; margin: 0 auto; }
+        .icon-btn { background: rgba(10, 10, 15, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); width: 42px; height: 42px; border-radius: 50%; color: white; font-size: 18px; display: flex; justify-content: center; align-items: center; cursor: pointer; pointer-events: auto; backdrop-filter: blur(8px); transition: 0.2s;}
         .icon-btn:active { transform: scale(0.9); }
 
-        #evolution-bar { position: absolute; bottom: calc(var(--banner-h) + 10px); left: 50%; transform: translateX(-50%); width: 90%; height: 26px; background: rgba(0,0,0,0.6); border-radius: 13px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 10px; z-index: 10; backdrop-filter: blur(5px); pointer-events: none; }
+        #evolution-bar { position: absolute; bottom: calc(var(--banner-h) + 12px); left: 50%; transform: translateX(-50%); width: 90%; height: 26px; background: rgba(0,0,0,0.6); border-radius: 13px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 12px; z-index: 10; backdrop-filter: blur(5px); pointer-events: none; }
         .evo-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 5px currentColor; opacity: 0.2; transition: 0.3s; }
         .evo-dot.active { opacity: 1; transform: scale(1.4); }
 
-        #ad-banner { height: var(--banner-h); background: #0a0a10; display: flex; justify-content: center; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 12px; z-index: 20; position: relative; }
+        #ad-banner { height: var(--banner-h); background: #0a0a10; display: flex; justify-content: center; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 12px; z-index: 20; position: relative; width: 100%;}
 
         /* Modals */
         .overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 30; opacity: 0; pointer-events: none; transition: 0.3s; }
@@ -48,15 +48,16 @@
         .overlay.active .modal-card { transform: translateY(0); }
         
         h1, h2 { margin-top: 0; color: #fff; }
-        .btn { background: linear-gradient(45deg, #00ffcc, #0088ff); border: none; padding: 15px; border-radius: 20px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 15px; box-shadow: 0 10px 20px rgba(0, 255, 204, 0.3); transition: all 0.2s; text-transform: uppercase; width: 100%;}
+        .btn { background: linear-gradient(45deg, #00ffcc, #0088ff); border: none; padding: 15px; border-radius: 20px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 15px; box-shadow: 0 10px 20px rgba(0, 255, 204, 0.3); transition: all 0.2s; text-transform: uppercase; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn:active { transform: scale(0.95); box-shadow: 0 5px 10px rgba(0, 255, 204, 0.3); }
-        .btn.action { background: linear-gradient(45deg, #ffaa00, #ff0055); color: white; box-shadow: 0 5px 15px rgba(255, 85, 0, 0.3); font-size: 12px; padding: 10px 15px; pointer-events: auto; margin: 0; border-radius: 12px;}
-        .btn.action:disabled { background: #333; color: #777; box-shadow: none; transform: none; cursor: not-allowed; }
+        .btn.action { background: linear-gradient(45deg, #ffaa00, #ff0055); color: white; box-shadow: 0 5px 15px rgba(255, 85, 0, 0.3); font-size: 11px; padding: 10px 15px; pointer-events: auto; margin: 0; border-radius: 12px; width: auto;}
+        .btn.action:disabled { background: rgba(50,50,60,0.8); color: #777; box-shadow: none; cursor: not-allowed; border: 1px solid rgba(255,255,255,0.1); }
 
-        .danger-zone { position: absolute; top: 120px; left: 0; width: 100%; height: 2px; background: dashed rgba(255,255,255,0.1); z-index: 5; pointer-events: none; transition: 0.3s; }
+        .danger-zone { position: absolute; top: 130px; left: 0; width: 100%; height: 2px; background: dashed rgba(255,255,255,0.15); z-index: 5; pointer-events: none; transition: 0.3s; }
         .danger-zone.active { background: rgba(255, 0, 85, 0.8); box-shadow: 0 0 20px rgba(255,0,85,0.6); height: 4px; animation: alert 0.5s infinite alternate; }
         @keyframes alert { from { opacity: 0.5; } to { opacity: 1; } }
-        .hint { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.6); font-size: 18px; font-weight: bold; pointer-events: none; animation: pulse 2s infinite; text-align: center; width: 100%; z-index: 10;}
+        
+        .hint { position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.5); font-size: 16px; font-weight: bold; pointer-events: none; animation: pulse 2s infinite; text-align: center; width: 100%; z-index: 10;}
         @keyframes pulse { 0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.95); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); } }
         
         /* Магазин Скинов */
@@ -90,32 +91,32 @@
     
     <!-- Интерфейс -->
     <div id="hud">
-        <div class="glass-panel" style="display: flex; flex-direction: column; align-items: flex-start; min-width: 140px;">
+        <div class="glass-panel" style="display: flex; flex-direction: column; align-items: flex-start; min-width: 140px; padding-bottom: 8px;">
             <div class="stat-row">
                 <div style="text-align: left;">
-                    <h3>Счет</h3>
+                    <h3 style="color: #fff; opacity: 0.7;">Счет</h3>
                     <div class="score-val" id="score">0</div>
                 </div>
-                <div class="coins-val">🟡 <span id="coins-display">0</span></div>
+                <div class="coins-val">🪙 <span id="coins-display">0</span></div>
             </div>
             <div class="best-score">Топ: <span id="best-score">0</span></div>
         </div>
         
-        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; pointer-events: auto;">
-            <div style="display: flex; gap: 10px; align-items: flex-start;">
+        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 12px; pointer-events: auto;">
+            <div style="display: flex; gap: 10px; align-items: center;">
                 <div class="icon-btn" onclick="openShop()">🛒</div>
                 <div class="icon-btn" onclick="openSettings()">⚙️</div>
-                <div class="glass-panel" style="padding: 5px 10px;">
-                    <h3>След.</h3>
-                    <div id="next-box"><canvas id="next-canvas" width="45" height="45"></canvas></div>
+                <div class="glass-panel" style="padding: 8px 12px;">
+                    <h3 style="color: #fff; opacity: 0.7; font-size: 11px;">След.</h3>
+                    <div id="next-box"><canvas id="next-canvas" width="50" height="50"></canvas></div>
                 </div>
             </div>
-            <button class="btn action" id="bomb-btn" onclick="useBomb()">💣 ВЗОРВАТЬ НИЗ (100 🟡)</button>
+            <button class="btn action" id="bomb-btn" onclick="useBomb()">💣 ВЗОРВАТЬ НИЗ <br> (100 🪙)</button>
         </div>
     </div>
 
     <div class="danger-zone" id="danger"></div>
-    <div class="hint" id="hint">Удерживай и води<br>чтобы прицелиться</div>
+    <div class="hint" id="hint">Удерживай и води пальцем<br>чтобы прицелиться</div>
 
     <!-- Игровая зона -->
     <div id="canvas-wrapper"><canvas id="game"></canvas></div>
@@ -128,9 +129,9 @@
     <!-- Стартовый экран -->
     <div id="start-screen" class="overlay active">
         <div class="modal-card">
-            <h1 style="font-size: 32px; margin-bottom: 5px; text-shadow: 0 0 20px var(--accent);">NEON MERGE</h1>
-            <p style="color: #888; margin-bottom: 20px;">Meta Edition</p>
-            <div class="coins-val" style="justify-content: center; font-size: 24px; margin-bottom: 20px;">🟡 <span id="start-coins">0</span></div>
+            <h1 style="font-size: 34px; margin-bottom: 5px; text-shadow: 0 0 20px var(--accent);">NEON MERGE</h1>
+            <p style="color: #888; margin-bottom: 25px;">Meta Edition</p>
+            <div class="coins-val" style="justify-content: center; font-size: 24px; margin-bottom: 25px;">🪙 <span id="start-coins">0</span></div>
             <button class="btn" onclick="startGame()">▶ ИГРАТЬ</button>
             <button class="btn" style="background: #2a2a35; color: white; box-shadow: none;" onclick="openShop(true)">🛒 МАГАЗИН СКИНОВ</button>
         </div>
@@ -140,7 +141,7 @@
     <div id="shop-screen" class="overlay">
         <div class="modal-card">
             <h2>МАГАЗИН</h2>
-            <div class="coins-val" style="justify-content: center; margin-bottom: 10px;">Баланс: 🟡 <span id="shop-coins">0</span></div>
+            <div class="coins-val" style="justify-content: center; margin-bottom: 10px;">Баланс: 🪙 <span id="shop-coins">0</span></div>
             <div class="shop-grid">
                 <div class="skin-card selected" id="skin-0" onclick="buyOrSelectSkin(0, 0)">
                     <div class="skin-preview">
@@ -154,12 +155,12 @@
                 <div class="skin-card locked" id="skin-1" onclick="buyOrSelectSkin(1, 500)">
                     <div class="skin-preview preview-hollow"></div>
                     <div style="margin-top:10px; font-weight:bold; font-size:12px;">Кольца (TRON)</div>
-                    <div class="skin-price" id="price-1">500 🟡</div>
+                    <div class="skin-price" id="price-1">500 🪙</div>
                 </div>
                 <div class="skin-card locked" id="skin-2" onclick="buyOrSelectSkin(2, 1000)">
                     <div class="skin-preview preview-energy"></div>
                     <div style="margin-top:10px; font-weight:bold; font-size:12px;">Энергия</div>
-                    <div class="skin-price" id="price-2">1000 🟡</div>
+                    <div class="skin-price" id="price-2">1000 🪙</div>
                 </div>
             </div>
             <button class="btn" onclick="closeShop()">ЗАКРЫТЬ</button>
@@ -173,7 +174,7 @@
             <div class="toggle-row"><span>Звук и Музыка</span><label class="switch"><input type="checkbox" id="sound-toggle" checked onchange="toggleSound(this)"><span class="slider"></span></label></div>
             <div class="toggle-row"><span>Вибрация</span><label class="switch"><input type="checkbox" id="vibro-toggle" checked onchange="toggleVibro(this)"><span class="slider"></span></label></div>
             <button class="btn" onclick="closeSettings()">ПРОДОЛЖИТЬ</button>
-            <button class="btn" style="background: transparent; box-shadow: none; border: 1px solid #555; color: #aaa; margin-top: 10px;" onclick="resetGame(true)">СДАТЬСЯ (РЕСТАРТ)</button>
+            <button class="btn" style="background: transparent; box-shadow: none; border: 1px solid rgba(255,255,255,0.2); color: #aaa; margin-top: 15px;" onclick="resetGame(true)">СДАТЬСЯ (РЕСТАРТ)</button>
         </div>
     </div>
 
@@ -190,14 +191,14 @@
     <!-- Проигрыш -->
     <div id="game-over-screen" class="overlay">
         <div class="modal-card">
-            <h2>СИСТЕМА ПЕРЕГРУЖЕНА</h2>
-            <p><strong id="final-score" style="font-size: 45px; color: var(--accent); text-shadow: 0 0 20px var(--accent);">0</strong></p>
+            <h2>ПЕРЕГРУЗКА</h2>
+            <p><strong id="final-score" style="font-size: 48px; color: var(--accent); text-shadow: 0 0 20px var(--accent);">0</strong></p>
             <div style="background: rgba(0,0,0,0.5); border-radius: 15px; padding: 15px; margin: 15px 0;">
                 <p style="color: #aaa; margin: 0 0 5px 0; font-size: 14px;" id="new-record-text">Макс. комбо: <span id="final-combo" style="color: #fff; font-weight: bold;">x1</span></p>
-                <div class="coins-val" style="justify-content: center; font-size: 20px;">Заработано: +<span id="earned-coins">0</span> 🟡</div>
+                <div class="coins-val" style="justify-content: center; font-size: 20px;">Заработано: +<span id="earned-coins">0</span> 🪙</div>
             </div>
-            <button class="btn action" style="padding: 15px; font-size: 14px; margin-bottom: 10px;" onclick="useRewardedAdSave()">📺 СПАСТИ (РЕКЛАМА)</button>
-            <button class="btn" style="margin-top: 0;" onclick="resetGame(false)">ИГРАТЬ СНОВА</button>
+            <button class="btn action" style="padding: 15px; font-size: 14px; margin-bottom: 12px; width: 100%; border-radius: 20px;" onclick="useRewardedAdSave()">📺 СПАСТИ (РЕКЛАМА)</button>
+            <button class="btn" style="margin-top: 0; background: #2a2a35; color: white; box-shadow: none;" onclick="resetGame(false)">ИГРАТЬ СНОВА</button>
         </div>
     </div>
 </div>
@@ -212,7 +213,7 @@ if (typeof YaGames !== 'undefined') {
         console.log("Yandex Games SDK initialized");
         ysdk.features.LoadingAPI?.ready(); 
         const adBanner = document.getElementById('ad-banner');
-        if (adBanner) adBanner.style.display = 'none';
+        if (adBanner) adBanner.style.display = 'none'; // Скрываем заглушку для Яндекс (будет их RTB)
     }).catch(console.error);
 }
 
@@ -255,7 +256,7 @@ function updateCoinUI() {
     const bombBtn = document.getElementById('bomb-btn');
     if (bombBtn) {
         if(totalCoins >= 100) { bombBtn.disabled = false; bombBtn.style.opacity = '1'; }
-        else { bombBtn.disabled = true; bombBtn.style.opacity = '0.5'; }
+        else { bombBtn.disabled = true; bombBtn.style.opacity = '1'; } // Кнопка сама стилизуется через :disabled
     }
 }
 updateCoinUI();
@@ -263,7 +264,7 @@ updateCoinUI();
 // --- ДВИЖОК: Переменные ---
 const canvas = document.getElementById('game'); const ctx = canvas ? canvas.getContext('2d') : null;
 const nextCanvas = document.getElementById('next-canvas'); const nextCtx = nextCanvas ? nextCanvas.getContext('2d') : null;
-let width, height, state = 'start', score = 0, combo = 1, comboTimer = 0, maxCombo = 1, highestY = 1000;
+let width, height, floorY = 0, state = 'start', score = 0, combo = 1, comboTimer = 0, maxCombo = 1, highestY = 1000;
 let bodies = [], particles = [], texts = [], shockwaves = [], trail = [], confetti = [];
 let currentDrop = null, nextLvl = 0, dropCooldown = false, isAiming = false;
 let shakeAmount = 0;
@@ -278,6 +279,9 @@ function resize() {
     if(!canvas) return;
     width = canvas.parentElement.clientWidth; height = canvas.parentElement.clientHeight;
     canvas.width = width; canvas.height = height; highestY = height;
+    
+    // ИСПРАВЛЕНИЕ ПОЛА: Оставляем место для Evolution Bar снизу (около 50px от низа канваса)
+    floorY = height - 50; 
 }
 window.addEventListener('resize', resize); resize();
 
@@ -362,13 +366,13 @@ if (canvas) {
 
 function drawNext() {
     if(!nextCtx) return;
-    nextCtx.clearRect(0,0,45,45); const l = LEVELS[nextLvl]; const sc = Math.min(1, 15/l.r);
-    nextCtx.beginPath(); nextCtx.arc(22.5,22.5, l.r*sc, 0, Math.PI*2);
+    nextCtx.clearRect(0,0,50,50); const l = LEVELS[nextLvl]; const sc = Math.min(1, 16/l.r);
+    nextCtx.beginPath(); nextCtx.arc(25,25, l.r*sc, 0, Math.PI*2);
     
     if(currentSkin === 1) { // Hollow
         nextCtx.strokeStyle = l.color; nextCtx.lineWidth = 4; nextCtx.shadowColor = l.color; nextCtx.shadowBlur = 10; nextCtx.stroke();
     } else if (currentSkin === 2) { // Energy
-        const grad = nextCtx.createRadialGradient(22.5, 22.5, 0, 22.5, 22.5, l.r*sc);
+        const grad = nextCtx.createRadialGradient(25, 25, 0, 25, 25, l.r*sc);
         grad.addColorStop(0, '#fff'); grad.addColorStop(0.5, l.color); grad.addColorStop(1, '#000');
         nextCtx.fillStyle = grad; nextCtx.shadowColor = l.color; nextCtx.shadowBlur = 15; nextCtx.fill();
     } else { // Classic
@@ -377,7 +381,7 @@ function drawNext() {
 }
 
 function spawnNext() {
-    currentDrop = { x: width/2, y: 50, lvl: nextLvl, r: LEVELS[nextLvl].r, color: LEVELS[nextLvl].color };
+    currentDrop = { x: width/2, y: 80, lvl: nextLvl, r: LEVELS[nextLvl].r, color: LEVELS[nextLvl].color };
     nextLvl = Math.random() > 0.8 ? Math.floor(Math.random() * 3) : Math.floor(Math.random() * 2);
     drawNext(); dropCooldown = false;
 }
@@ -439,7 +443,7 @@ function updateScore(amt, x, y, lvl) {
 }
 
 // --- ФИЗИКА ---
-const GRAVITY = 0.5, DAMPING = 0.7, FRICTION = 0.95;
+const GRAVITY = 0.5, DAMPING = 0.6, FRICTION = 0.90;
 function updatePhysics() {
     const sub = 5; const dt = 1/sub; highestY = height;
     if (currentDrop && isAiming) currentDrop.x += (targetX - currentDrop.x) * 0.5;
@@ -487,9 +491,18 @@ function updatePhysics() {
             }
         }
         for (let b of bodies) {
+            // Границы стен
             if (b.x - b.r < 0) { b.x = b.r; b.vx *= -DAMPING; b.vAngle -= b.vy*0.05; b.scaleX=0.8; b.scaleY=1.2; }
             if (b.x + b.r > width) { b.x = width - b.r; b.vx *= -DAMPING; b.vAngle += b.vy*0.05; b.scaleX=0.8; b.scaleY=1.2;}
-            if (b.y + b.r > height) { b.y = height - b.r; b.vy *= -DAMPING; b.vx *= FRICTION; b.vAngle += b.vx * 0.1; if(b.vy < -3){ b.scaleX=1.3; b.scaleY=0.7; playSound('bounce');} }
+            
+            // ИСПРАВЛЕННЫЙ ПОЛ
+            if (b.y + b.r > floorY) { 
+                b.y = floorY - b.r; 
+                b.vy *= -DAMPING; 
+                b.vx *= FRICTION; 
+                b.vAngle += b.vx * 0.1; 
+                if(b.vy < -3){ b.scaleX=1.3; b.scaleY=0.7; playSound('bounce');} 
+            }
         }
     }
     bodies = bodies.filter(b => !b.merged);
@@ -575,6 +588,14 @@ function render() {
     ctx.clearRect(0, 0, width, height); ctx.save();
     if (shakeAmount > 0) { ctx.translate((Math.random()-0.5)*shakeAmount, (Math.random()-0.5)*shakeAmount); shakeAmount *= 0.9; if(shakeAmount < 0.5) shakeAmount = 0; }
 
+    // Визуализация "пола"
+    ctx.beginPath();
+    ctx.moveTo(0, floorY);
+    ctx.lineTo(width, floorY);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
     for (let b of bodies) {
         ctx.save(); ctx.translate(b.x, b.y); ctx.scale(b.scaleX, b.scaleY);
         drawSkin(ctx, b);
@@ -582,15 +603,39 @@ function render() {
     }
 
     if (currentDrop && state === 'playing') {
-        if (isAiming) {
-            trail.push({x: currentDrop.x, y: currentDrop.y}); if(trail.length > 8) trail.shift();
-            ctx.beginPath(); if(trail.length > 0) ctx.moveTo(trail[0].x, trail[0].y - trail.length*3);
-            for(let i=1; i<trail.length; i++) ctx.lineTo(trail[i].x, trail[i].y - (trail.length-i)*3);
-            ctx.strokeStyle = currentDrop.color; ctx.lineWidth = currentDrop.r; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-            ctx.globalAlpha = 0.2; ctx.globalCompositeOperation = 'screen'; ctx.stroke();
-            
-            ctx.globalAlpha = 0.4; ctx.beginPath(); ctx.moveTo(currentDrop.x, currentDrop.y); ctx.lineTo(currentDrop.x, height); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.setLineDash([8, 12]); ctx.stroke(); ctx.setLineDash([]);
+        
+        // РАСЧЕТ ПРИЗРАКА (Ghost Drop)
+        let ghostY = floorY - currentDrop.r;
+        for (let b of bodies) {
+            let dx = currentDrop.x - b.x;
+            let distSq = (currentDrop.r + b.r) * (currentDrop.r + b.r);
+            if (dx * dx < distSq) {
+                let dy = Math.sqrt(distSq - dx * dx);
+                let hitY = b.y - dy;
+                if (hitY < ghostY) ghostY = hitY;
+            }
         }
+
+        if (isAiming) {
+            // Линия прицела до призрака
+            ctx.beginPath();
+            ctx.moveTo(currentDrop.x, currentDrop.y + currentDrop.r);
+            ctx.lineTo(currentDrop.x, ghostY - currentDrop.r);
+            ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([8, 8]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Отрисовка Призрака
+            ctx.globalAlpha = 0.25;
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.save(); ctx.translate(currentDrop.x, ghostY);
+            let aimAng = Math.atan2(height - currentDrop.y, (width/2) - currentDrop.x);
+            drawSkin(ctx, {...currentDrop, y: ghostY, angle: 0}, true, aimAng);
+            ctx.restore();
+        }
+        
         ctx.globalAlpha = 1.0; ctx.globalCompositeOperation = 'source-over';
         ctx.save(); ctx.translate(currentDrop.x, currentDrop.y);
         let aimAng = isAiming ? Math.atan2(height - currentDrop.y, (width/2) - currentDrop.x) : 0;
@@ -717,7 +762,7 @@ function useBomb() {
     totalCoins -= 100; localStorage.setItem('neonCoins', totalCoins); updateCoinUI();
     
     // Взрываем нижнюю 1/3 экрана
-    const blowLimit = height - (height * 0.3);
+    const blowLimit = floorY - ((floorY - 120) * 0.35);
     const removed = bodies.filter(b => b.y > blowLimit);
     bodies = bodies.filter(b => b.y <= blowLimit);
     
@@ -750,7 +795,6 @@ function showAdModal(cb) {
                 } 
             }, 1000);
         } else {
-            // Фолбэк если DOM не успел загрузиться (на всякий случай)
             state = oldState; unmuteAudio(); if(cb) cb(); 
         }
     }
