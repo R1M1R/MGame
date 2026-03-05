@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- Специфичные мета-теги для корректной работы PWA на iOS (iPhone) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Neon Merge">
+    <link rel="apple-touch-icon" href="icon.png">
+    
     <title>Неоновое Слияние: Мета Версия</title>
     <link rel="manifest" id="manifest-link" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%D0%9D%D0%B5%D0%BE%D0%BD%D0%BE%D0%B2%D0%BE%D0%B5%20%D0%A1%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%22%2C%22short_name%22%3A%22%D0%9D%D0%B5%D0%BE%D0%BD%D0%BE%D0%B2%D0%BE%D0%B5%20%D0%A1%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23050508%22%2C%22theme_color%22%3A%22%23050508%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22icon.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D'>
     <link rel="icon" id="favicon" href="icon.png" type="image/png">
@@ -22,8 +29,14 @@
         #canvas-wrapper { flex: 1; position: relative; width: 100%; z-index: 2; }
         canvas { display: block; width: 100%; height: 100%; }
 
-        /* UI */
-        #hud { position: absolute; top: env(safe-area-inset-top, 15px); left: 0; width: 100%; padding: 0 15px; pointer-events: none; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; }
+        /* UI (Обновлено для iOS Safe Area) */
+        #hud { 
+            position: absolute; 
+            top: 0; left: 0; width: 100%; 
+            padding: 15px; 
+            padding-top: calc(env(safe-area-inset-top, 20px) + 15px); /* Отступ от челки iPhone */
+            pointer-events: none; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; 
+        }
         .glass-panel { background: rgba(10, 10, 15, 0.7); padding: 12px 15px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); text-align: center; pointer-events: auto;}
         
         .stat-row { display: flex; justify-content: space-between; width: 100%; align-items: flex-start; gap: 15px;}
@@ -35,11 +48,12 @@
         .icon-btn { background: rgba(10, 10, 15, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); width: 42px; height: 42px; border-radius: 50%; color: white; font-size: 18px; display: flex; justify-content: center; align-items: center; cursor: pointer; pointer-events: auto; backdrop-filter: blur(8px); transition: 0.2s;}
         .icon-btn:active { transform: scale(0.9); }
 
-        #evolution-bar { position: absolute; bottom: calc(var(--banner-h) + 12px); left: 50%; transform: translateX(-50%); width: 90%; height: 26px; background: rgba(0,0,0,0.6); border-radius: 13px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 12px; z-index: 10; backdrop-filter: blur(5px); pointer-events: none; }
+        /* Полоса эволюции (учитывает Safe Area снизу) */
+        #evolution-bar { position: absolute; bottom: calc(env(safe-area-inset-bottom, 0px) + var(--banner-h) + 12px); left: 50%; transform: translateX(-50%); width: 90%; height: 26px; background: rgba(0,0,0,0.6); border-radius: 13px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 12px; z-index: 10; backdrop-filter: blur(5px); pointer-events: none; }
         .evo-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 5px currentColor; opacity: 0.2; transition: 0.3s; }
         .evo-dot.active { opacity: 1; transform: scale(1.4); }
 
-        #ad-banner { height: var(--banner-h); background: #0a0a10; display: flex; justify-content: center; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 12px; z-index: 20; position: relative; width: 100%;}
+        #ad-banner { position: absolute; bottom: env(safe-area-inset-bottom, 0px); left: 0; height: var(--banner-h); background: #0a0a10; display: flex; justify-content: center; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 12px; z-index: 20; width: 100%;}
 
         /* Modals */
         .overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 30; opacity: 0; pointer-events: none; transition: 0.3s; }
@@ -53,7 +67,7 @@
         .btn.action { background: linear-gradient(45deg, #ffaa00, #ff0055); color: white; box-shadow: 0 5px 15px rgba(255, 85, 0, 0.3); font-size: 11px; padding: 10px 15px; pointer-events: auto; margin: 0; border-radius: 12px; width: auto;}
         .btn.action:disabled { background: rgba(50,50,60,0.8); color: #777; box-shadow: none; cursor: not-allowed; border: 1px solid rgba(255,255,255,0.1); }
 
-        .danger-zone { position: absolute; top: 130px; left: 0; width: 100%; height: 2px; background: dashed rgba(255,255,255,0.15); z-index: 5; pointer-events: none; transition: 0.3s; }
+        .danger-zone { position: absolute; top: calc(env(safe-area-inset-top, 20px) + 140px); left: 0; width: 100%; height: 2px; background: dashed rgba(255,255,255,0.15); z-index: 5; pointer-events: none; transition: 0.3s; }
         .danger-zone.active { background: rgba(255, 0, 85, 0.8); box-shadow: 0 0 20px rgba(255,0,85,0.6); height: 4px; animation: alert 0.5s infinite alternate; }
         @keyframes alert { from { opacity: 0.5; } to { opacity: 1; } }
         
@@ -97,7 +111,7 @@
                     <h3 style="color: #fff; opacity: 0.7;">Счет</h3>
                     <div class="score-val" id="score">0</div>
                 </div>
-                <div class="coins-val">🪙 <span id="coins-display">0</span></div>
+                <div class="coins-val">🟡 <span id="coins-display">0</span></div>
             </div>
             <div class="best-score">Топ: <span id="best-score">0</span></div>
         </div>
@@ -111,7 +125,7 @@
                     <div id="next-box"><canvas id="next-canvas" width="50" height="50"></canvas></div>
                 </div>
             </div>
-            <button class="btn action" id="bomb-btn" onclick="useBomb()">💣 ВЗОРВАТЬ НИЗ <br> (100 🪙)</button>
+            <button class="btn action" id="bomb-btn" onclick="useBomb()">💣 ВЗОРВАТЬ НИЗ <br> (100 🟡)</button>
         </div>
     </div>
 
@@ -131,7 +145,7 @@
         <div class="modal-card">
             <h1 style="font-size: 34px; margin-bottom: 5px; text-shadow: 0 0 20px var(--accent);">НЕОНОВОЕ СЛИЯНИЕ</h1>
             <p style="color: #888; margin-bottom: 25px;">Мета Версия</p>
-            <div class="coins-val" style="justify-content: center; font-size: 24px; margin-bottom: 25px;">🪙 <span id="start-coins">0</span></div>
+            <div class="coins-val" style="justify-content: center; font-size: 24px; margin-bottom: 25px;">🟡 <span id="start-coins">0</span></div>
             <button class="btn" onclick="startGame()">▶ ИГРАТЬ</button>
             <button class="btn" style="background: #2a2a35; color: white; box-shadow: none;" onclick="openShop(true)">🛒 МАГАЗИН СКИНОВ</button>
         </div>
@@ -141,7 +155,7 @@
     <div id="shop-screen" class="overlay">
         <div class="modal-card">
             <h2>МАГАЗИН</h2>
-            <div class="coins-val" style="justify-content: center; margin-bottom: 10px;">Баланс: 🪙 <span id="shop-coins">0</span></div>
+            <div class="coins-val" style="justify-content: center; margin-bottom: 10px;">Баланс: 🟡 <span id="shop-coins">0</span></div>
             <div class="shop-grid">
                 <div class="skin-card selected" id="skin-0" onclick="buyOrSelectSkin(0, 0)">
                     <div class="skin-preview">
@@ -155,12 +169,12 @@
                 <div class="skin-card locked" id="skin-1" onclick="buyOrSelectSkin(1, 500)">
                     <div class="skin-preview preview-hollow"></div>
                     <div style="margin-top:10px; font-weight:bold; font-size:12px;">Кольца (ТРОН)</div>
-                    <div class="skin-price" id="price-1">500 🪙</div>
+                    <div class="skin-price" id="price-1">500 🟡</div>
                 </div>
                 <div class="skin-card locked" id="skin-2" onclick="buyOrSelectSkin(2, 1000)">
                     <div class="skin-preview preview-energy"></div>
                     <div style="margin-top:10px; font-weight:bold; font-size:12px;">Энергия</div>
-                    <div class="skin-price" id="price-2">1000 🪙</div>
+                    <div class="skin-price" id="price-2">1000 🟡</div>
                 </div>
             </div>
             <button class="btn" onclick="closeShop()">ЗАКРЫТЬ</button>
@@ -195,7 +209,7 @@
             <p><strong id="final-score" style="font-size: 48px; color: var(--accent); text-shadow: 0 0 20px var(--accent);">0</strong></p>
             <div style="background: rgba(0,0,0,0.5); border-radius: 15px; padding: 15px; margin: 15px 0;">
                 <p style="color: #aaa; margin: 0 0 5px 0; font-size: 14px;" id="new-record-text">Макс. комбо: <span id="final-combo" style="color: #fff; font-weight: bold;">x1</span></p>
-                <div class="coins-val" style="justify-content: center; font-size: 20px;">Заработано: +<span id="earned-coins">0</span> 🪙</div>
+                <div class="coins-val" style="justify-content: center; font-size: 20px;">Заработано: +<span id="earned-coins">0</span> 🟡</div>
             </div>
             <button class="btn action" style="padding: 15px; font-size: 14px; margin-bottom: 12px; width: 100%; border-radius: 20px;" onclick="useRewardedAdSave()">📺 СПАСТИ (РЕКЛАМА)</button>
             <button class="btn" style="margin-top: 0; background: #2a2a35; color: white; box-shadow: none;" onclick="resetGame(false)">ИГРАТЬ СНОВА</button>
@@ -256,7 +270,7 @@ function updateCoinUI() {
     const bombBtn = document.getElementById('bomb-btn');
     if (bombBtn) {
         if(totalCoins >= 100) { bombBtn.disabled = false; bombBtn.style.opacity = '1'; }
-        else { bombBtn.disabled = true; bombBtn.style.opacity = '1'; } // Кнопка сама стилизуется через :disabled
+        else { bombBtn.disabled = true; bombBtn.style.opacity = '1'; } 
     }
 }
 updateCoinUI();
@@ -280,8 +294,14 @@ function resize() {
     width = canvas.parentElement.clientWidth; height = canvas.parentElement.clientHeight;
     canvas.width = width; canvas.height = height; highestY = height;
     
-    // ИСПРАВЛЕНИЕ ПОЛА: Оставляем место для Evolution Bar снизу (около 50px от низа канваса)
-    floorY = height - 50; 
+    // ИСПРАВЛЕНИЕ ПОЛА (Учитывает safe-area снизу)
+    let safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-bottom)') || '0');
+    if(isNaN(safeBottom)) safeBottom = 0;
+    floorY = height - 60 - safeBottom; 
+    
+    // Исправление линии смерти (динамическая в зависимости от высоты)
+    const dangerZone = document.getElementById('danger');
+    if(dangerZone) dangerZone.style.top = (height * 0.15) + 'px';
 }
 window.addEventListener('resize', resize); resize();
 
@@ -381,7 +401,11 @@ function drawNext() {
 }
 
 function spawnNext() {
-    currentDrop = { x: width/2, y: 80, lvl: nextLvl, r: LEVELS[nextLvl].r, color: LEVELS[nextLvl].color };
+    // Начальная позиция с учетом Safe Area
+    let safeTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-top)') || '0');
+    if(isNaN(safeTop)) safeTop = 0;
+    
+    currentDrop = { x: width/2, y: safeTop + 100, lvl: nextLvl, r: LEVELS[nextLvl].r, color: LEVELS[nextLvl].color };
     nextLvl = Math.random() > 0.8 ? Math.floor(Math.random() * 3) : Math.floor(Math.random() * 2);
     drawNext(); dropCooldown = false;
 }
@@ -508,7 +532,9 @@ function updatePhysics() {
     bodies = bodies.filter(b => !b.merged);
     const dangerZone = document.getElementById('danger');
     if (dangerZone) {
-        if (highestY < 200) dangerZone.classList.add('active'); else dangerZone.classList.remove('active');
+        // Линия смерти (Danger Zone)
+        let dangerY = height * 0.15;
+        if (highestY < dangerY) dangerZone.classList.add('active'); else dangerZone.classList.remove('active');
     }
 }
 
@@ -520,6 +546,8 @@ function drawFace(ctx, r, isScared, vy, isAimingFace = false, aimAngle = 0) {
 
     let pupilOffX = 0, pupilOffY = 0;
     if (isAimingFace) { pupilOffX = Math.sin(aimAngle) * eR * 0.5; pupilOffY = Math.cos(aimAngle) * eR * 0.5 + eR*0.3; }
+
+    let dangerY = height * 0.15;
 
     if (isScared) {
         ctx.beginPath(); ctx.arc(-eOff, eY, eR*1.2, 0, Math.PI*2); ctx.fill();
@@ -578,7 +606,8 @@ function drawSkin(ctx, b, isCurrentAiming = false, aimAngle = 0) {
         ctx.fillStyle = grad; ctx.fill();
         
         ctx.rotate(b.angle);
-        b.isScared = (b.y < 300 && highestY < 250);
+        let dangerY = height * 0.15;
+        b.isScared = (b.y < (dangerY + 50) && highestY < dangerY);
         drawFace(ctx, b.r, b.isScared, b.vy || 0, isCurrentAiming, aimAngle);
     }
 }
@@ -673,8 +702,10 @@ function gameLoop() {
     requestAnimationFrame(gameLoop); if (state !== 'playing') return;
     updatePhysics(); render(); if (comboTimer > 0) comboTimer--;
 
+    let dangerY = height * 0.15;
+
     for (let b of bodies) {
-        if (b.y - b.r < 120 && Math.abs(b.vy) < 0.2) {
+        if (b.y - b.r < dangerY && Math.abs(b.vy) < 0.2) {
             b.stuck = (b.stuck || 0) + 1;
             if (b.stuck > 120) { 
                 state = 'gameover'; vibro([500, 100, 500]);
