@@ -7,6 +7,9 @@
     <link rel="manifest" id="manifest-link" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Neon%20Merge%22%2C%22short_name%22%3A%22Neon%20Merge%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23050508%22%2C%22theme_color%22%3A%22%23050508%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22icon.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D'>
     <link rel="icon" id="favicon" href="icon.png" type="image/png">
     
+    <!-- YANDEX GAMES SDK -->
+    <script src="https://yandex.ru/games/sdk/v2"></script>
+
     <style>
         :root { --bg-color: #050508; --accent: #00ffcc; --banner-h: 60px; --coin: #ffcc00; }
         * { box-sizing: border-box; user-select: none; -webkit-user-select: none; touch-action: none; -webkit-tap-highlight-color: transparent; }
@@ -169,16 +172,6 @@
         </div>
     </div>
 
-    <!-- Реклама -->
-    <div id="ad-screen" class="overlay">
-        <div class="modal-card">
-            <h2>Рекламная пауза</h2>
-            <div style="margin: 30px auto; width: 60px; height: 60px; border: 6px solid rgba(255,255,255,0.05); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s ease-in-out infinite;"></div>
-            <p id="ad-timer" style="font-size: 32px; font-weight: 900; color: var(--accent);">3</p>
-            <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
-        </div>
-    </div>
-
     <!-- Проигрыш -->
     <div id="game-over-screen" class="overlay">
         <div class="modal-card">
@@ -195,6 +188,22 @@
 </div>
 
 <script>
+// --- ИНИЦИАЛИЗАЦИЯ YANDEX SDK ---
+let ysdk = null;
+
+// Пытаемся инициализировать SDK при загрузке
+if (typeof YaGames !== 'undefined') {
+    YaGames.init().then(_ysdk => {
+        ysdk = _ysdk;
+        console.log("Yandex Games SDK initialized");
+        // Сообщаем платформе, что игра загрузилась (обязательно для модерации)
+        ysdk.features.LoadingAPI?.ready(); 
+        
+        // Убираем наш HTML баннер, так как Яндекс покажет свой (Sticky)
+        document.getElementById('ad-banner').style.display = 'none';
+    }).catch(console.error);
+}
+
 // --- КОНФИГ И УРОВНИ ---
 const LEVELS = [
     { r: 16, color: '#ff0055', score: 2, mass: 1 },    
@@ -259,8 +268,13 @@ window.addEventListener('resize', resize); resize();
 // --- АУДИО И ВИБРО ---
 let actx;
 function initAudio() { if(isSoundOn && !actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if(actx && actx.state === 'suspended') actx.resume(); }
+
+// Вспомогательные функции для заглушения при рекламе
+function muteAudio() { if(actx && actx.state === 'running') actx.suspend(); }
+function unmuteAudio() { if(isSoundOn && actx && actx.state === 'suspended') actx.resume(); }
+
 function playSound(type, level = 0) {
-    if(!isSoundOn || !actx) return;
+    if(!isSoundOn || !actx || actx.state === 'suspended') return;
     const now = actx.currentTime; const osc = actx.createOscillator(); const gain = actx.createGain();
     osc.connect(gain); gain.connect(actx.destination);
     
@@ -602,7 +616,14 @@ function gameLoop() {
 }
 
 // --- УПРАВЛЕНИЕ, МАГАЗИН И БУСТЕРЫ ---
-function startGame() { document.getElementById('start-screen').classList.remove('active'); sessionCoins = 0; state = 'playing'; spawnNext(); requestAnimationFrame(gameLoop); }
+function startGame() { 
+    document.getElementById('start-screen').classList.remove('active'); 
+    sessionCoins = 0; 
+    state = 'playing'; 
+    spawnNext(); 
+    requestAnimationFrame(gameLoop); 
+}
+
 function openSettings() { if(state !== 'playing') return; state = 'paused'; document.getElementById('settings-screen').classList.add('active'); }
 function closeSettings() { document.getElementById('settings-screen').classList.remove('active'); state = 'playing'; }
 
@@ -664,25 +685,82 @@ function useBomb() {
     bodies.forEach(b => { b.vy -= 15; b.vAngle += (Math.random()-0.5)*0.5; });
 }
 
+// --- ЯНДЕКС РЕКЛАМА И ЗАГЛУШКИ ---
 function showAdModal(cb) {
-    let oldState = state; state = 'paused'; const m = document.getElementById('ad-screen'); const t = document.getElementById('ad-timer');
-    m.classList.add('active'); let timeLeft = 2; t.innerText = timeLeft;
-    const int = setInterval(() => { timeLeft--; t.innerText = timeLeft; if (timeLeft <= 0) { clearInterval(int); m.classList.remove('active'); state = oldState; if(cb) cb(); } }, 1000);
+    let oldState = state; 
+    state = 'paused'; 
+    muteAudio(); // Глушим звук для модерации Яндекса
+
+    if (ysdk) {
+        ysdk.adv.showFullscreenAdv({
+            callbacks: {
+                onClose: function() {
+                    state = oldState; unmuteAudio(); if(cb) cb();
+                },
+                onError: function() {
+                    state = oldState; unmuteAudio(); if(cb) cb();
+                }
+            }
+        });
+    } else {
+        // Заглушка для тестирования локально
+        const m = document.getElementById('ad-screen'); const t = document.getElementById('ad-timer');
+        m.classList.add('active'); let timeLeft = 2; t.innerText = timeLeft;
+        const int = setInterval(() => { 
+            timeLeft--; t.innerText = timeLeft; 
+            if (timeLeft <= 0) { 
+                clearInterval(int); m.classList.remove('active'); state = oldState; unmuteAudio(); if(cb) cb(); 
+            } 
+        }, 1000);
+    }
 }
 
 function useRewardedAdSave() {
     if(bodies.length < 2) return;
-    showAdModal(() => {
-        document.getElementById('game-over-screen').classList.remove('active');
-        bodies.sort((a, b) => a.y - b.y); const removed = bodies.splice(0, 3);
-        removed.forEach(r => { spawnSparks(r.x, r.y, '#fff', 50); addShockwave(r.x, r.y, r.color); });
-        playSound('cheer'); vibro(300); shakeAmount = 30; highestY = height; state = 'playing';
-    });
+    
+    let oldState = state;
+    state = 'paused';
+    muteAudio(); // Глушим звук для модерации
+
+    if (ysdk) {
+        ysdk.adv.showRewardedVideo({
+            callbacks: {
+                onRewarded: () => {
+                    document.getElementById('game-over-screen').classList.remove('active');
+                    bodies.sort((a, b) => a.y - b.y); const removed = bodies.splice(0, 3);
+                    removed.forEach(r => { spawnSparks(r.x, r.y, '#fff', 50); addShockwave(r.x, r.y, r.color); });
+                    shakeAmount = 30; highestY = height;
+                },
+                onClose: () => {
+                    state = 'playing'; unmuteAudio(); playSound('cheer'); vibro(300);
+                },
+                onError: () => {
+                    state = oldState; unmuteAudio();
+                }
+            }
+        });
+    } else {
+        // Заглушка для тестирования локально
+        const m = document.getElementById('ad-screen'); const t = document.getElementById('ad-timer');
+        m.classList.add('active'); let timeLeft = 2; t.innerText = timeLeft;
+        const int = setInterval(() => { 
+            timeLeft--; t.innerText = timeLeft; 
+            if (timeLeft <= 0) { 
+                clearInterval(int); m.classList.remove('active'); 
+                document.getElementById('game-over-screen').classList.remove('active');
+                bodies.sort((a, b) => a.y - b.y); const removed = bodies.splice(0, 3);
+                removed.forEach(r => { spawnSparks(r.x, r.y, '#fff', 50); addShockwave(r.x, r.y, r.color); });
+                unmuteAudio(); playSound('cheer'); vibro(300); shakeAmount = 30; highestY = height; state = 'playing';
+            } 
+        }, 1000);
+    }
 }
 
 function resetGame(fromSettings = false) {
     if(fromSettings) document.getElementById('settings-screen').classList.remove('active');
     document.getElementById('game-over-screen').classList.remove('active');
+    
+    // Показываем рекламу перед перезапуском
     showAdModal(() => {
         bodies = []; particles = []; texts = []; shockwaves = []; confetti = []; sessionCoins = 0;
         score = 0; combo = 1; maxCombo = 1; document.getElementById('score').innerText = score;
