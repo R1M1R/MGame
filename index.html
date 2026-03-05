@@ -29,29 +29,43 @@
         #canvas-wrapper { flex: 1; position: relative; width: 100%; z-index: 2; }
         canvas { display: block; width: 100%; height: 100%; }
 
-        /* UI (Обновлено для iOS Safe Area и узких экранов) */
+        /* UI Верхний HUD */
         #hud { 
             position: absolute; 
             top: 0; left: 0; width: 100%; 
-            padding: 10px; 
+            padding: 10px 15px; 
             padding-top: calc(env(safe-area-inset-top, 20px) + 10px); 
             pointer-events: none; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; 
         }
         .glass-panel { background: rgba(10, 10, 15, 0.7); padding: 10px 12px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); text-align: center; pointer-events: auto;}
         
         .stat-row { display: flex; justify-content: space-between; width: 100%; align-items: flex-start; gap: 10px;}
-        .score-val { font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent); font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 4px; text-align: left;}
+        .score-val { font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent); font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 4px; text-align: left;}
         .best-score { font-size: 10px; color: #ff0055; font-weight: bold; text-shadow: 0 0 5px rgba(255,0,85,0.5); text-align: left; opacity: 0.9;}
-        .coins-val { font-size: 14px; font-weight: 900; color: var(--coin); text-shadow: 0 0 10px rgba(255, 204, 0, 0.5); display: flex; align-items: center; gap: 4px; }
+        .coins-val { font-size: 15px; font-weight: 900; color: var(--coin); text-shadow: 0 0 10px rgba(255, 204, 0, 0.5); display: flex; align-items: center; gap: 4px; }
         
         #next-box { width: 45px; height: 45px; position: relative; display: flex; justify-content: center; align-items: center; margin: 0 auto; }
-        .icon-btn { background: rgba(10, 10, 15, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); width: 38px; height: 38px; border-radius: 50%; color: white; font-size: 16px; display: flex; justify-content: center; align-items: center; cursor: pointer; pointer-events: auto; backdrop-filter: blur(8px); transition: 0.2s;}
+        .icon-btn { background: rgba(10, 10, 15, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); width: 40px; height: 40px; border-radius: 50%; color: white; font-size: 18px; display: flex; justify-content: center; align-items: center; cursor: pointer; pointer-events: auto; backdrop-filter: blur(8px); transition: 0.2s;}
         .icon-btn:active { transform: scale(0.9); }
 
-        /* Полоса эволюции (учитывает Safe Area снизу) */
-        #evolution-bar { position: absolute; bottom: calc(env(safe-area-inset-bottom, 0px) + var(--banner-h) + 15px); left: 50%; transform: translateX(-50%); width: 92%; height: 26px; background: rgba(0,0,0,0.7); border-radius: 13px; border: 1px solid rgba(255,255,255,0.15); display: flex; justify-content: space-between; align-items: center; padding: 0 12px; z-index: 10; backdrop-filter: blur(8px); pointer-events: none; }
-        .evo-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 5px currentColor; opacity: 0.2; transition: 0.3s; }
-        .evo-dot.active { opacity: 1; transform: scale(1.4); }
+        /* Нижняя панель способностей (вместо шкалы) */
+        #action-bar {
+            position: absolute; 
+            bottom: calc(env(safe-area-inset-bottom, 0px) + var(--banner-h) + 15px); 
+            left: 50%; transform: translateX(-50%); 
+            width: 92%; display: flex; justify-content: space-between; gap: 10px; z-index: 10; pointer-events: none;
+        }
+
+        .ability-btn {
+            flex: 1; background: rgba(20, 20, 30, 0.85); border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px; padding: 12px 5px; color: white; font-size: 13px; font-weight: bold;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+            pointer-events: auto; cursor: pointer; backdrop-filter: blur(10px); transition: 0.2s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        .ability-btn:active { transform: scale(0.95); }
+        .ability-btn:disabled { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; transform: none; }
+        .ability-price { color: var(--coin); font-size: 11px; display: flex; align-items: center; gap: 3px; background: rgba(0,0,0,0.4); padding: 2px 8px; border-radius: 10px;}
 
         #ad-banner { position: absolute; bottom: env(safe-area-inset-bottom, 0px); left: 0; height: var(--banner-h); background: #0a0a10; display: flex; justify-content: center; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 12px; z-index: 20; width: 100%;}
 
@@ -64,9 +78,7 @@
         h1, h2 { margin-top: 0; color: #fff; }
         .btn { background: linear-gradient(45deg, #00ffcc, #0088ff); border: none; padding: 15px; border-radius: 20px; color: #000; font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 15px; box-shadow: 0 10px 20px rgba(0, 255, 204, 0.3); transition: all 0.2s; text-transform: uppercase; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;}
         .btn:active { transform: scale(0.95); box-shadow: 0 5px 10px rgba(0, 255, 204, 0.3); }
-        .btn.action { background: linear-gradient(45deg, #ffaa00, #ff0055); color: white; box-shadow: 0 5px 15px rgba(255, 85, 0, 0.3); font-size: 11px; padding: 10px 15px; pointer-events: auto; margin: 0; border-radius: 12px; width: auto;}
-        .btn.action:disabled { background: rgba(50,50,60,0.8); color: #777; box-shadow: none; cursor: not-allowed; border: 1px solid rgba(255,255,255,0.1); }
-
+        
         .danger-zone { position: absolute; top: calc(env(safe-area-inset-top, 20px) + 120px); left: 0; width: 100%; height: 2px; background: dashed rgba(255,255,255,0.15); z-index: 5; pointer-events: none; transition: 0.3s; }
         .danger-zone.active { background: rgba(255, 0, 85, 0.8); box-shadow: 0 0 20px rgba(255,0,85,0.6); height: 4px; animation: alert 0.5s infinite alternate; }
         @keyframes alert { from { opacity: 0.5; } to { opacity: 1; } }
@@ -116,16 +128,14 @@
             <div class="best-score">Топ: <span id="best-score">0</span></div>
         </div>
         
-        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px; pointer-events: auto;">
-            <div style="display: flex; gap: 8px; align-items: center;">
-                <div class="icon-btn" onclick="openShop()">🛒</div>
-                <div class="icon-btn" onclick="openSettings()">⚙️</div>
-                <div class="glass-panel" style="padding: 6px 10px;">
-                    <h3 style="color: #fff; opacity: 0.7; font-size: 10px; margin-bottom: 2px;">След.</h3>
-                    <div id="next-box"><canvas id="next-canvas" width="45" height="45"></canvas></div>
-                </div>
+        <!-- Кнопки магазина, настроек и следующая фигура -->
+        <div style="display: flex; gap: 8px; align-items: flex-start; pointer-events: auto;">
+            <div class="icon-btn" onclick="openShop()">🛒</div>
+            <div class="icon-btn" onclick="openSettings()">⚙️</div>
+            <div class="glass-panel" style="padding: 6px 10px;">
+                <h3 style="color: #fff; opacity: 0.7; font-size: 10px; margin-bottom: 2px;">След.</h3>
+                <div id="next-box"><canvas id="next-canvas" width="45" height="45"></canvas></div>
             </div>
-            <button class="btn action" id="bomb-btn" onclick="useBomb()">💣 ВЗОРВАТЬ НИЗ (100 🟡)</button>
         </div>
     </div>
 
@@ -135,10 +145,21 @@
     <!-- Игровая зона -->
     <div id="canvas-wrapper"><canvas id="game"></canvas></div>
     
-    <div id="evolution-bar"></div>
+    <!-- Новая панель способностей (Вместо шкалы) -->
+    <div id="action-bar">
+        <button class="ability-btn" id="shake-btn" onclick="useShake()">
+            <span style="font-size: 18px;">🫨 Встряска</span>
+            <div class="ability-price">50 🟡</div>
+        </button>
+        <button class="ability-btn" id="bomb-btn" onclick="useBomb()">
+            <span style="font-size: 18px;">💣 Бомба</span>
+            <div class="ability-price">100 🟡</div>
+        </button>
+    </div>
+
     <div id="ad-banner">МЕСТО ДЛЯ РЕКЛАМЫ (320x50)</div>
 
-    <!-- МОДАЛЬНЫЕ ОКНА (Все строго внутри #app) -->
+    <!-- МОДАЛЬНЫЕ ОКНА -->
     
     <!-- Стартовый экран -->
     <div id="start-screen" class="overlay active">
@@ -211,7 +232,7 @@
                 <p style="color: #aaa; margin: 0 0 5px 0; font-size: 14px;" id="new-record-text">Макс. комбо: <span id="final-combo" style="color: #fff; font-weight: bold;">x1</span></p>
                 <div class="coins-val" style="justify-content: center; font-size: 20px;">Заработано: +<span id="earned-coins">0</span> 🟡</div>
             </div>
-            <button class="btn action" style="padding: 15px; font-size: 14px; margin-bottom: 12px; width: 100%; border-radius: 20px;" onclick="useRewardedAdSave()">📺 СПАСТИ (РЕКЛАМА)</button>
+            <button class="btn" style="background: linear-gradient(45deg, #ffaa00, #ff0055); color: white; padding: 15px; margin-bottom: 12px; font-size: 14px;" onclick="useRewardedAdSave()">📺 СПАСТИ (РЕКЛАМА)</button>
             <button class="btn" style="margin-top: 0; background: #2a2a35; color: white; box-shadow: none;" onclick="resetGame(false)">ИГРАТЬ СНОВА</button>
         </div>
     </div>
@@ -227,7 +248,7 @@ if (typeof YaGames !== 'undefined') {
         console.log("Yandex Games SDK initialized");
         ysdk.features.LoadingAPI?.ready(); 
         const adBanner = document.getElementById('ad-banner');
-        if (adBanner) adBanner.style.display = 'none'; // Скрываем заглушку для Яндекс (будет их RTB)
+        if (adBanner) adBanner.style.display = 'none';
     }).catch(console.error);
 }
 
@@ -246,14 +267,6 @@ const LEVELS = [
     { r: 230, color: '#ffffff', score: 2048, mass: 25 } 
 ];
 
-const evoBar = document.getElementById('evolution-bar');
-if (evoBar) {
-    LEVELS.forEach((lvl, i) => {
-        const dot = document.createElement('div'); dot.className = 'evo-dot'; dot.style.color = lvl.color; dot.style.backgroundColor = lvl.color;
-        dot.id = `evo-${i}`; evoBar.appendChild(dot);
-    });
-}
-
 // --- ЭКОНОМИКА И META ---
 let bestScore = parseInt(localStorage.getItem('neonMergeBest') || 0);
 let totalCoins = parseInt(localStorage.getItem('neonCoins') || 0);
@@ -267,11 +280,12 @@ function updateCoinUI() {
     const elStartCoins = document.getElementById('start-coins'); if(elStartCoins) elStartCoins.innerText = totalCoins;
     const elShopCoins = document.getElementById('shop-coins'); if(elShopCoins) elShopCoins.innerText = totalCoins;
     
+    // Обновление состояния кнопок способностей
     const bombBtn = document.getElementById('bomb-btn');
-    if (bombBtn) {
-        if(totalCoins >= 100) { bombBtn.disabled = false; bombBtn.style.opacity = '1'; }
-        else { bombBtn.disabled = true; bombBtn.style.opacity = '1'; } 
-    }
+    if (bombBtn) bombBtn.disabled = totalCoins < 100;
+    
+    const shakeBtn = document.getElementById('shake-btn');
+    if (shakeBtn) shakeBtn.disabled = totalCoins < 50;
 }
 updateCoinUI();
 
@@ -294,13 +308,12 @@ function resize() {
     width = canvas.parentElement.clientWidth; height = canvas.parentElement.clientHeight;
     canvas.width = width; canvas.height = height; highestY = height;
     
-    // ИСПРАВЛЕНИЕ ПОЛА (Гарантированно выше полосы эволюции)
+    // Расчет пола: Учитываем Safe Area и высоту новой панели способностей
     let safeBottom = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-bottom)') || '0');
     if(isNaN(safeBottom)) safeBottom = 0;
-    // 60(баннер) + 15(отступ) + 26(полоса) + 10(доп. отступ) = 111px от низа
-    floorY = height - safeBottom - 115; 
+    // баннер (60) + панель скиллов (около 60) + отступы = 140
+    floorY = height - safeBottom - 140; 
     
-    // Исправление линии смерти (динамическая в зависимости от высоты)
     const dangerZone = document.getElementById('danger');
     let safeTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-top)') || '0');
     if(isNaN(safeTop)) safeTop = 0;
@@ -321,7 +334,6 @@ document.addEventListener('visibilitychange', () => {
 // --- АУДИО И ВИБРО ---
 let actx;
 function initAudio() { if(isSoundOn && !actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if(actx && actx.state === 'suspended') actx.resume(); }
-
 function muteAudio() { if(actx && actx.state === 'running') actx.suspend(); }
 function unmuteAudio() { if(isSoundOn && actx && actx.state === 'suspended') actx.resume(); }
 
@@ -402,13 +414,13 @@ function drawNext() {
     nextCtx.clearRect(0,0,50,50); const l = LEVELS[nextLvl]; const sc = Math.min(1, 16/l.r);
     nextCtx.beginPath(); nextCtx.arc(22.5,22.5, l.r*sc, 0, Math.PI*2);
     
-    if(currentSkin === 1) { // Hollow
+    if(currentSkin === 1) { 
         nextCtx.strokeStyle = l.color; nextCtx.lineWidth = 4; nextCtx.shadowColor = l.color; nextCtx.shadowBlur = 10; nextCtx.stroke();
-    } else if (currentSkin === 2) { // Energy
+    } else if (currentSkin === 2) { 
         const grad = nextCtx.createRadialGradient(22.5, 22.5, 0, 22.5, 22.5, l.r*sc);
         grad.addColorStop(0, '#fff'); grad.addColorStop(0.5, l.color); grad.addColorStop(1, '#000');
         nextCtx.fillStyle = grad; nextCtx.shadowColor = l.color; nextCtx.shadowBlur = 15; nextCtx.fill();
-    } else { // Classic
+    } else { 
         nextCtx.fillStyle = l.color; nextCtx.shadowColor = l.color; nextCtx.shadowBlur = 10; nextCtx.fill();
     }
 }
@@ -440,7 +452,6 @@ function updateScore(amt, x, y, lvl) {
     if (comboTimer > 0) { combo++; if(combo > maxCombo) maxCombo = combo; } else combo = 1;
     comboTimer = 200; 
     
-    // Очки
     const add = amt * combo; score += add; 
     const scoreEl = document.getElementById('score'); if(scoreEl) scoreEl.innerText = score;
     if (score > bestScore) { 
@@ -448,14 +459,12 @@ function updateScore(amt, x, y, lvl) {
         const bestEl = document.getElementById('best-score'); if(bestEl) bestEl.innerText = bestScore; 
     }
 
-    // Монеты
     const earnedCoins = (lvl + 1) * combo;
     totalCoins += earnedCoins; sessionCoins += earnedCoins;
     localStorage.setItem('neonCoins', totalCoins);
     updateCoinUI();
 
     shakeAmount = 5 + combo * 2;
-    document.querySelectorAll('.evo-dot').forEach((d, i) => d.classList.toggle('active', i <= lvl));
     
     const ambient = document.getElementById('ambient');
     if(ambient) ambient.style.background = `radial-gradient(circle at 50% 50%, ${LEVELS[lvl].color}25, transparent 70%)`;
@@ -469,10 +478,7 @@ function updateScore(amt, x, y, lvl) {
         if(lvl >= 6) {
             spawnConfetti(x, y); 
             const flash = document.getElementById('screen-flash');
-            if(flash) {
-                flash.style.opacity = '1';
-                setTimeout(()=> flash.style.opacity = '0', 100); 
-            }
+            if(flash) { flash.style.opacity = '1'; setTimeout(()=> flash.style.opacity = '0', 100); }
             playSound('cheer');
         }
     }
@@ -527,21 +533,21 @@ function updatePhysics() {
             }
         }
         for (let b of bodies) {
-            // Границы стен
             if (b.x - b.r < 0) { b.x = b.r; b.vx *= -DAMPING; b.vAngle -= b.vy*0.05; b.scaleX=0.8; b.scaleY=1.2; }
             if (b.x + b.r > width) { b.x = width - b.r; b.vx *= -DAMPING; b.vAngle += b.vy*0.05; b.scaleX=0.8; b.scaleY=1.2;}
-            
-            // ИСПРАВЛЕННЫЙ ПОЛ
             if (b.y + b.r > floorY) { 
-                b.y = floorY - b.r; 
-                b.vy *= -DAMPING; 
-                b.vx *= FRICTION; 
-                b.vAngle += b.vx * 0.1; 
+                b.y = floorY - b.r; b.vy *= -DAMPING; b.vx *= FRICTION; b.vAngle += b.vx * 0.1; 
                 if(b.vy < -3){ b.scaleX=1.3; b.scaleY=0.7; playSound('bounce');} 
             }
         }
     }
     bodies = bodies.filter(b => !b.merged);
+    const dangerZone = document.getElementById('danger');
+    if (dangerZone) {
+        let safeTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-top)') || '0');
+        let dangerY = safeTop + height * 0.18;
+        if (highestY < dangerY) dangerZone.classList.add('active'); else dangerZone.classList.remove('active');
+    }
 }
 
 // --- ОТРИСОВКА И СКИНЫ ---
@@ -625,8 +631,12 @@ function render() {
     // Визуализация "пола" (Градиентная линия)
     ctx.globalCompositeOperation = 'screen';
     const floorGrad = ctx.createLinearGradient(0, 0, width, 0);
-    floorGrad.addColorStop(0, 'rgba(0, 255, 204, 0)'); floorGrad.addColorStop(0.5, 'rgba(0, 255, 204, 0.3)'); floorGrad.addColorStop(1, 'rgba(0, 255, 204, 0)');
+    floorGrad.addColorStop(0, 'rgba(0, 255, 204, 0)'); floorGrad.addColorStop(0.5, 'rgba(0, 255, 204, 0.4)'); floorGrad.addColorStop(1, 'rgba(0, 255, 204, 0)');
     ctx.beginPath(); ctx.moveTo(0, floorY); ctx.lineTo(width, floorY); ctx.strokeStyle = floorGrad; ctx.lineWidth = 3; ctx.stroke();
+    
+    // Легкое свечение под полом
+    ctx.fillStyle = 'rgba(0, 255, 204, 0.05)';
+    ctx.fillRect(0, floorY, width, height - floorY);
     ctx.globalCompositeOperation = 'source-over';
 
     for (let b of bodies) {
@@ -636,8 +646,6 @@ function render() {
     }
 
     if (currentDrop && state === 'playing') {
-        
-        // РАСЧЕТ ПРИЗРАКА (Ghost Drop)
         let ghostY = floorY - currentDrop.r;
         for (let b of bodies) {
             let dx = currentDrop.x - b.x;
@@ -792,7 +800,6 @@ function useBomb() {
     if(state !== 'playing' || totalCoins < 100) return;
     totalCoins -= 100; localStorage.setItem('neonCoins', totalCoins); updateCoinUI();
     
-    // Взрываем нижнюю 1/3 экрана
     const blowLimit = floorY - ((floorY - 120) * 0.35);
     const removed = bodies.filter(b => b.y > blowLimit);
     bodies = bodies.filter(b => b.y <= blowLimit);
@@ -800,8 +807,22 @@ function useBomb() {
     removed.forEach(r => { spawnSparks(r.x, r.y, '#fff', 30); addShockwave(r.x, r.y, r.color); });
     playSound('cheer'); vibro(400); shakeAmount = 40; highestY = height;
     
-    // Подкидываем оставшиеся
     bodies.forEach(b => { b.vy -= 15; b.vAngle += (Math.random()-0.5)*0.5; });
+}
+
+// НОВАЯ ФУНКЦИЯ: ВСТРЯСКА
+function useShake() {
+    if(state !== 'playing' || totalCoins < 50) return;
+    totalCoins -= 50; localStorage.setItem('neonCoins', totalCoins); updateCoinUI();
+    
+    playSound('bounce'); vibro([100, 50, 100]); shakeAmount = 60;
+    
+    // Подкидываем все шарики
+    bodies.forEach(b => { 
+        b.vy -= (Math.random() * 8 + 5); 
+        b.vx += (Math.random() - 0.5) * 10;
+        b.vAngle += (Math.random() - 0.5) * 2;
+    });
 }
 
 // --- ЯНДЕКС РЕКЛАМА И ЗАГЛУШКИ ---
@@ -875,7 +896,6 @@ function resetGame(fromSettings = false) {
         bodies = []; particles = []; texts = []; shockwaves = []; confetti = []; sessionCoins = 0;
         score = 0; combo = 1; maxCombo = 1; 
         const s = document.getElementById('score'); if(s) s.innerText = score;
-        document.querySelectorAll('.evo-dot').forEach((d,i)=>d.classList.toggle('active', i===0));
         const amb = document.getElementById('ambient'); if(amb) amb.style.background = `radial-gradient(circle at 50% 50%, rgba(255, 0, 127, 0.05), transparent 60%)`;
         state = 'playing'; spawnNext();
     });
