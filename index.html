@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Neon Merge: Meta Edition</title>
-    <link rel="manifest" id="manifest-link" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Neon%20Merge%22%2C%22short_name%22%3A%22Neon%20Merge%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23050508%22%2C%22theme_color%22%3A%22%23050508%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22icon.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D'>
+    <title>Неоновое Слияние: Мета Версия</title>
+    <link rel="manifest" id="manifest-link" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%D0%9D%D0%B5%D0%BE%D0%BD%D0%BE%D0%B2%D0%BE%D0%B5%20%D0%A1%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%22%2C%22short_name%22%3A%22%D0%9D%D0%B5%D0%BE%D0%BD%D0%BE%D0%B2%D0%BE%D0%B5%20%D0%A1%D0%BB%D0%B8%D1%8F%D0%BD%D0%B8%D0%B5%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23050508%22%2C%22theme_color%22%3A%22%23050508%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22icon.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D'>
     <link rel="icon" id="favicon" href="icon.png" type="image/png">
     
     <!-- YANDEX GAMES SDK -->
@@ -122,15 +122,15 @@
     <div id="canvas-wrapper"><canvas id="game"></canvas></div>
     
     <div id="evolution-bar"></div>
-    <div id="ad-banner">AD PLACEHOLDER (320x50)</div>
+    <div id="ad-banner">МЕСТО ДЛЯ РЕКЛАМЫ (320x50)</div>
 
     <!-- МОДАЛЬНЫЕ ОКНА (Все строго внутри #app) -->
     
     <!-- Стартовый экран -->
     <div id="start-screen" class="overlay active">
         <div class="modal-card">
-            <h1 style="font-size: 34px; margin-bottom: 5px; text-shadow: 0 0 20px var(--accent);">NEON MERGE</h1>
-            <p style="color: #888; margin-bottom: 25px;">Meta Edition</p>
+            <h1 style="font-size: 34px; margin-bottom: 5px; text-shadow: 0 0 20px var(--accent);">НЕОНОВОЕ СЛИЯНИЕ</h1>
+            <p style="color: #888; margin-bottom: 25px;">Мета Версия</p>
             <div class="coins-val" style="justify-content: center; font-size: 24px; margin-bottom: 25px;">🪙 <span id="start-coins">0</span></div>
             <button class="btn" onclick="startGame()">▶ ИГРАТЬ</button>
             <button class="btn" style="background: #2a2a35; color: white; box-shadow: none;" onclick="openShop(true)">🛒 МАГАЗИН СКИНОВ</button>
@@ -154,7 +154,7 @@
                 </div>
                 <div class="skin-card locked" id="skin-1" onclick="buyOrSelectSkin(1, 500)">
                     <div class="skin-preview preview-hollow"></div>
-                    <div style="margin-top:10px; font-weight:bold; font-size:12px;">Кольца (TRON)</div>
+                    <div style="margin-top:10px; font-weight:bold; font-size:12px;">Кольца (ТРОН)</div>
                     <div class="skin-price" id="price-1">500 🪙</div>
                 </div>
                 <div class="skin-card locked" id="skin-2" onclick="buyOrSelectSkin(2, 1000)">
